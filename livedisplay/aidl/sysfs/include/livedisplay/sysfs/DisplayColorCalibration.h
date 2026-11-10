@@ -28,7 +28,10 @@ class DisplayColorCalibration : public BnDisplayColorCalibration,
 template <>
 struct ModeTrait<DisplayColorCalibration> {
     static constexpr const char* kName = "DisplayColorCalibration";
-    static constexpr std::array kPaths = {"/sys/class/graphics/fb0/rgb"};
+    static constexpr std::array kPaths = {
+            "/sys/devices/platform/kcal_ctrl.0/kcal",
+            "/sys/class/graphics/fb0/rgb",
+    };
 };
 
 }  // namespace sysfs

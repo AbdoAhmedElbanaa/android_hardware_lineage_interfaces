@@ -34,6 +34,7 @@ class PictureAdjustment : public BnPictureAdjustment {
 
   private:
     std::shared_ptr<SDMController> controller_;
+    bool has_kcal_ = false;
     HSIC default_pa_ = {};
 
     bool isReady();
