@@ -12,6 +12,7 @@
 #include <livedisplay/sdm/DisplayModes.h>
 #include <livedisplay/sdm/PictureAdjustment.h>
 #include <livedisplay/sdm/SDMController.h>
+#include <unistd.h>
 
 using ::aidl::vendor::lineage::livedisplay::sdm::DisplayModes;
 using ::aidl::vendor::lineage::livedisplay::sdm::PictureAdjustment;
@@ -21,7 +22,9 @@ int main() {
     android::ProcessState::self()->setThreadPoolMaxThreadCount(1);
     android::ProcessState::self()->startThreadPool();
 
-    std::shared_ptr<SDMController> controller = std::make_shared<SDMController>();
+    bool has_kcal = access("/sys/devices/platform/kcal_ctrl.0/kcal_hue", F_OK) == 0;
+    std::shared_ptr<SDMController> controller =
+            (ENABLE_DM || !has_kcal) ? std::make_shared<SDMController>() : nullptr;
     std::shared_ptr<DisplayModes> dm =
             ENABLE_DM ? ndk::SharedRefBase::make<DisplayModes>(controller) : nullptr;
     std::shared_ptr<PictureAdjustment> pa =
